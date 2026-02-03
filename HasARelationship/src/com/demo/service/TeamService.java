@@ -7,142 +7,136 @@ import com.demo.beans.Team;
 
 public class TeamService {
 	static Team[] tarr;
-	static int cnt;
+	static int count;
+	
+	
 	static {
-		tarr=new Team[20];
-		Player[] parr1=new Player[15];
-		//(1,"Virat Kohli","battsman")
-		parr1[0]=new Player(1,"Virat Kohli","batsman");
-		parr1[1]=new Player(2,"Rohit Sharma","batsman");
-		parr1[2]=new Player(3,"Hardik Pandya","Allrounder");
+		tarr = new Team[20];
 		
-		Player c1=new Player(2,"Rohit Sharma","batsman");
-		//team 1 of first 3 players
-		tarr[0]=new Team(101,"Rcb",c1,parr1,3);
+		Player[] plist1 = new Player[10];
+		//Team 1
+		plist1[0] = new Player(11, "Hardik Pandya", "AllRounder");
+		plist1[1] = new Player(12, "Rohit Sharma", "Batsman");
+		plist1[2] = new Player(13, "Tilak Verma", "Batsman");
 		
+		Player c1 = new Player(12, "Rohit Sharma", "Batsman");
+		tarr[0] = new Team(101,"Mi", c1, plist1, 4);
 		
-		Player[] parr2=new Player[20];
-		parr2[0]=new Player(16,"Dravid","Batsman");
-		parr2[1]=new Player(17,"Saurabh","Batsman");
-		parr2[2]=new Player(18,"Sachin","Allrounder");
-		parr2[3]=new Player(19,"Jadeja","Allrounder");
+		//Team 2
+		Player[] plist2 = new Player[10];
+		plist1[0] = new Player(21, "Virat Kohli", "Batsman");
+		plist1[1] = new Player(22, "Ravi Jadeja", "AllRounder");
+		plist1[2] = new Player(23, "Jasprit Bumrah", "Bowler");
 		
-		Player c2=new Player(18,"Sachin","Allrounder");
-		//team 1 of first 3 players
-		tarr[1]=new Team(102,"Csk",c2,parr2,4);
+		Player c2 = new Player(21, "Virat Kohli", "Batsman");
+		tarr[1] = new Team(102,"Rcb", c2, plist2, 3);
 		
-		cnt=2;
+		count=2;
 	}
 
-	public static boolean addNewTeam() {
-		Scanner sc=new Scanner(System.in);
-		if(cnt!=20) {
-			//team details
-			System.out.println("enter team id: ");
-			int tid=sc.nextInt();
-			System.out.println("enter team name: ");
-			String tname=sc.next();
+	public Boolean addNewTeam() {
+		Scanner sc = new Scanner(System.in);
+		if(count<20) {
+			System.out.println("Enter team id=");
+			int tid = sc.nextInt();
+			System.out.println("Enter team name=");
+			String tname = sc.next();
+//			System.out.println("Enter team size=");
+//			int tsize = sc.nextInt();
 			
-			//captain details
-			System.out.println("enter captain player id: ");
-			int pid=sc.nextInt();
-			System.out.println("enter captain player name: ");
-			String pname=sc.next();
-			System.out.println("enter captain player speciality: ");
-			String sp=sc.next();
-			//captain object in constructor
-			Player c=new Player(pid,pname,sp);
-			//loop for creating Player list
-			Player[] plst=new Player[15];
-			plst[0]=c;
+			System.out.println("Enter team captain id=");
+			int cid= sc.nextInt();
+			System.out.println("Enter captain name=");
+			String cname = sc.next();
+			System.out.println("Enetr captain speciality=");
+			String csp = sc.next();
+			
+			Player c = new Player(cid, cname, csp);
+			
+			Player[] pl = new Player[15];
+			pl[0] = c;
+			
 			int i=1;
-			String ans="y";
+			String ans = "y";
+			
 			do {
-				//player details
-				System.out.println("enter Player id: ");
-				pid=sc.nextInt();
-				System.out.println("enter Player name: ");
-				pname=sc.next();
-				System.out.println("enter Player speciality: ");
-				sp=sc.next();
-				plst[i]=new Player(pid,pname,sp);
+				System.out.println("Enter Player id=");
+				int pid = sc.nextInt();
+				System.out.println("Enter Player name=");
+				String pname = sc.next();
+				System.out.println("Enter Player speciality");
+				String psp = sc.next();
+				
+				pl[i] = new Player(pid, pname, psp);
 				i++;
-				System.out.println("Do u want to add more players? (y/n)");
-				ans=sc.next();
+				System.out.println("Do you wish to continue y\n");
+				ans = sc.next();
 			}while(ans.equals("y"));
 			
-			//add team object in the tarr at cnt position
-			tarr[cnt]=new Team(tid,tname,c,plst,i);
-			cnt++;
+			tarr[count] = new Team(tid, tname, c, pl, i);
+			count++;
 			return true;
+			
 		}
-		return false;
+			return false;
 	}
 
-	public static void displayAll() {
-		for(Team t:tarr) {
-			if(t!=null) {
+	public void displayAllTeams() {
+		for(Team t : tarr) {
+			if(t!=null)
 				System.out.println(t);
-			}else {
-				break;
-			}
+			else
+				System.out.println("No teams found");
+			break;
 		}		
 	}
 
-	public static Team findById(int tid) {
-		for(Team t:tarr) {
+	public Team findTeamById(int id) {
+		for(Team t : tarr) {
 			if(t!=null) {
-				if(t.getTid()==tid) {
+				if(t.getTid()==id)
 					return t;
-				}
-			}else {
-				break;
+				else
+					System.out.println("No teams found");
+					break;
 			}
 		}
 		return null;
 	}
 
-	public static boolean addNewPlayer(int teamid, int pid, String pname, String sp) {
-		Team t=findById(teamid);
-		// (t) represents the team in which new player is to be added
+	public Boolean addnewPlayer(int tid, int pid, String name, String sp) {
+		Team t =findTeamById(tid);
 		if(t!=null) {
-			//create a new player
-			Player p=new Player(pid,pname,sp);
-			//Retrieves the current number of players in the team
-			int s=t.getSize();
-			//gets the player array (getPlist() returns Player[]) and writes the new Player into index s
-			//new player is added to the team via the player list
-			t.getPlist()[s]=p;
-			//update size of the team
-			//represents 1 player is incremented
-			t.setSize(s+1);
+			Player p = new Player(pid,name,sp);
+			int size = t.getSize();
+			t.getPlist()[size] = p;
+			t.setSize(size +1);
 			return true;
 		}
 		return false;
 	}
 
-	public static Team findTeamByPlayer(int pid) {
-		//loop for all teams
+	public Team findTeamByPlayer(int playerId) {
 		for(Team t:tarr) {
-			//if team is true (exists) 
 			if(t!=null) {
-				//player array of players from each team
-				Player[] plst=t.getPlist();
-				//player loop for all players in each team 
-				for(Player p:plst) {
-					//if a player id matches, then we found the team
-					if(p.getId()==pid) {
+				for(Player p:t.getPlist()) {
+					if(p.getId()==playerId) {
 						return t;
-					}else {
+					}
+					else {
 						break;
 					}
 				}
-			}else {
+			}
+			else {
 				break;
 			}
 		}
 		return null;
 	}
-
+	
+	
+	
+	
 	
 }

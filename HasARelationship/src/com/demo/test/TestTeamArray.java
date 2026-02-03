@@ -2,84 +2,80 @@ package com.demo.test;
 
 import java.util.Scanner;
 
-import com.demo.beans.Player;
 import com.demo.beans.Team;
 import com.demo.service.TeamService;
 
 public class TestTeamArray {
 
 	public static void main(String[] args) {
-		Scanner sc=new Scanner(System.in);
-		int choice=0;
+		Scanner sc = new Scanner(System.in);
+		int choice;
+		TeamService tservice = new TeamService();
 		
 		do {
-			System.out.println("1.Add new team\n2.Display all teams");
-			System.out.println("3.Search team by id\n4.Add new player");
-			System.out.println("5.Search a player\n6.exit\nChoice:");
-			choice=sc.nextInt();
+			System.out.println("1. Add new Team\n 2. Display all Teams\n");
+			System.out.println("3. Search Team by id\n 4. Add new Player\n");
+			System.out.println("5. Search a Player\n 6. Exit\n Choice:");
+			
+			choice = sc.nextInt();
 			
 			switch(choice) {
 			case 1:
-				boolean status=TeamService.addNewTeam();
-				if(status) {
-					System.out.println("Team added succesfully");
-				}else {
-					System.out.println("unsuccesful");
-				}
+				Boolean status = tservice.addNewTeam();
+				if(status)
+					System.out.println("Team added successfully");
+				else
+					System.out.println("Error");
 				break;
 				
 			case 2:
-				TeamService.displayAll();
+				tservice.displayAllTeams();
 				break;
 				
 			case 3:
-				//what team to find
-				System.out.println("enter team id to search: ");
-				int tid=sc.nextInt();
-				Team t=TeamService.findById(tid);
+				
+				System.out.println("Enetr team id=");
+				int id = sc.nextInt();
+				Team t = tservice.findTeamById(id);
 				if(t!=null) {
 					System.out.println(t);
 				}else {
 					System.out.println("not found");
 				}
 				break;
-				
+			
 			case 4:
-				//which team u want to add a player in
-				System.out.println("enter team id to add new player");
-				int teamid=sc.nextInt();
-				//details of player to be added
-				System.out.println("enter Player id: ");
-				int pid=sc.nextInt();
-				System.out.println("enter Player name: ");
-				String pname=sc.next();
-				System.out.println("enter Player speciality: ");
-				String sp=sc.next();
-				status=TeamService.addNewPlayer(teamid,pid,pname,sp);
-				if(status)
-					System.out.println("player added successfully");
-				else
-					System.out.println("Error: Team not found");
-				break;
-				
+				System.out.println("Enter team id add new player=");
+				int tid = sc.nextInt();
+				System.out.println("Add new player id=");
+				int pid = sc.nextInt();
+				System.out.println("Enter plyer name=");
+				String name = sc.next();
+				System.out.println("Enter player speciality=");
+				String sp = sc.next();
+				status = tservice.addnewPlayer(tid, pid, name, sp);
+			
 			case 5:
-				//which player you want to search
-				System.out.println("enter player id: ");
-				pid=sc.nextInt();
-				Team team=TeamService.findTeamByPlayer(pid);
-				if(team!=null) {
+				System.out.println("Enter pid to search");
+				int playerId = sc.nextInt();
+				Team team = tservice.findTeamByPlayer(playerId);
+				if(team!=null)
 					System.out.println(team);
-				}else {
-					System.out.println("player not found");
-				}
-				System.out.println();
+				else
+					System.out.println("Not found");
 				break;
 				
+			case 6:
+				System.out.println("ThankYou for visiting");
+				break;
+					
 			default:
-				System.out.println("Wrong choice");
+				System.out.println("Wrong choice entered");
 				break;
 			}
-		}while(choice!=1);
+			
+			
+		}while(choice!=6);
 		
 	}
 
